@@ -1,4 +1,5 @@
 #include "factorization.h"
+#include "primality.h"
 
 uint64_t trialDivision(uint64_t n) {
  
@@ -13,6 +14,34 @@ uint64_t trialDivision(uint64_t n) {
     }
 
     return 0; 
+}
+
+uint64_t f(uint64_t x, uint64_t n) {
+    return (mul_mod(x, x, n) + 1) % n;
+}
+
+uint64_t pollardRho(uint64_t n) {
+    if (n % 2 == 0) { 
+        return 2; 
+    }
+
+    uint64_t x = 2;
+    uint64_t y = 2;
+    uint64_t d = 1;
+
+    while (d == 1) {
+        x = f(x, n);
+        y = f(f(y, n), n);
+
+        uint64_t diff = (x > y) ? (x - y) : (y - x);
+        d = gcd(diff, n);
+
+        if (d == n) { 
+            return 0; 
+        }
+    }
+
+    return d;
 }
 
 
