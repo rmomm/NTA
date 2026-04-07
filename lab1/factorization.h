@@ -26,3 +26,5 @@ uint64_t computeX(vector<int>& x, vector<uint64_t>& bi, uint64_t n);
 uint64_t computeY(vector<int>& x, vector<vector<int>>& vi, vector<uint64_t>& B, uint64_t n);
 
 uint64_t brillhartMorrison(uint64_t n);
+
+void factor(uint64_t n, vector<uint64_t>& factors);

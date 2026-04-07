@@ -58,7 +58,7 @@ int legendreSymbol(uint64_t a, uint64_t p) {
 
 vector<uint64_t> factorBase(uint64_t n) {
     vector<uint64_t> B;
-    B.push_back(-1); // p0 = -1
+    B.push_back(-1); 
 
     uint64_t L = exp(sqrt(log(n) * log(log(n))));
 
@@ -117,12 +117,12 @@ vector<int> factorVector(uint64_t bi, vector<uint64_t>& B, uint64_t n) {
             x /= p;
         }
 
-        v[j] %= 2; // mod 2
+        v[j] %= 2; 
     }
 
     if (x != 1) { 
         return {};
-    } // не B-гладке
+    }
 
     return v;
 }
@@ -231,4 +231,31 @@ uint64_t brillhartMorrison(uint64_t n) {
     }
 
     return d;
+}
+
+
+void factor(uint64_t n, vector<uint64_t>& factors) {
+    if (n == 1) return;
+
+    if (isPrime(n, 5)) {
+        factors.push_back(n);
+        return;
+    }
+
+    uint64_t d = trialDivision(n);
+
+    if (d == 0) {
+        d = pollardRho(n);
+    }
+    if (d == 0) {
+        d = brillhartMorrison(n);
+    }
+
+    if (d == 0 || d == n) {
+        factors.push_back(n);
+        return;
+    }
+
+    factor(d, factors);
+    factor(n / d, factors);
 }
