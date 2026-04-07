@@ -1,4 +1,4 @@
-#include "factorization.h"
+﻿#include "factorization.h"
 #include "primality.h"
 
 uint64_t trialDivision(uint64_t n) {
@@ -47,18 +47,18 @@ uint64_t pollardRho(uint64_t n) {
 int legendreSymbol(uint64_t a, uint64_t p) {
     uint64_t res = pow_mod(a, (p - 1) / 2, p);
 
-    if (res == 1) { 
-        return 1; 
+    if (res == 1) {
+        return 1;
     }
-    if (res == p - 1) { 
-        return -1; 
+    if (res == p - 1) {
+        return -1;
     }
     return 0;
 }
 
 vector<uint64_t> factorBase(uint64_t n) {
     vector<uint64_t> B;
-    B.push_back(-1); 
+    B.push_back(-1);
 
     uint64_t L = exp(sqrt(log(n) * log(log(n))));
 
@@ -82,7 +82,7 @@ ContinuedFraction sqrtContinuedFraction(uint64_t n, int s) {
     q[0] = a0;
 
     b[0] = a0;
-    if (s > 1) { 
+    if (s > 1) {
         b[1] = q[0] * b[0] + 1;
     }
 
@@ -117,10 +117,10 @@ vector<int> factorVector(uint64_t bi, vector<uint64_t>& B, uint64_t n) {
             x /= p;
         }
 
-        v[j] %= 2; 
+        v[j] %= 2;
     }
 
-    if (x != 1) { 
+    if (x != 1) {
         return {};
     }
 
@@ -128,6 +128,9 @@ vector<int> factorVector(uint64_t bi, vector<uint64_t>& B, uint64_t n) {
 }
 
 vector<int> solveGF2(vector<vector<int>>& mat) {
+    if (mat.empty()) { 
+        return {}; 
+    }
     int n = mat.size();
     int m = mat[0].size();
 
@@ -144,8 +147,8 @@ vector<int> solveGF2(vector<vector<int>>& mat) {
 
         bool zero = true;
         for (int j = 0; j < m; j++) {
-            if (sum[j] != 0) { 
-                zero = false; 
+            if (sum[j] != 0) {
+                zero = false;
             }
         }
 
@@ -181,8 +184,8 @@ uint64_t computeY(vector<int>& x, vector<vector<int>>& vi, vector<uint64_t>& B, 
         int sum = 0;
 
         for (int i = 0; i < x.size(); i++) {
-            if (x[i]) { 
-                sum += vi[i][j]; 
+            if (x[i]) {
+                sum += vi[i][j];
             }
         }
 
@@ -213,21 +216,21 @@ uint64_t brillhartMorrison(uint64_t n) {
 
     vector<int> sol = solveGF2(matrix);
 
-    if (sol.empty()) { 
-        return 0; 
+    if (sol.empty()) {
+        return 0;
     }
 
     uint64_t X = computeX(sol, good_b, n);
     uint64_t Y = computeY(sol, matrix, B, n);
 
-    if (X == Y || X == (n - Y)) { 
-        return 0; 
+    if (X == Y || X == (n - Y)) {
+        return 0;
     }
 
     uint64_t d = gcd((X > Y ? X - Y : Y - X), n);
 
-    if (d == 1 || d == n) { 
-        return 0; 
+    if (d == 1 || d == n) {
+        return 0;
     }
 
     return d;
