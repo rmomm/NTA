@@ -30,7 +30,7 @@ uint64_t pow_mod(uint64_t a, uint64_t b, uint64_t m) {
     a %= m;
 
     while (b > 0) {
-        if (b & 1){
+        if (b & 1) {
             result = mul_mod(result, a, m);
         }
 
@@ -42,7 +42,7 @@ uint64_t pow_mod(uint64_t a, uint64_t b, uint64_t m) {
 }
 
 
-bool millerTest(uint64_t n, uint64_t d) {
+bool millerTest(uint64_t n, uint64_t d, uint64_t s) {
     uint64_t a = 2 + rand() % (n - 3);
 
     if (gcd(a, n) > 1) {
@@ -51,19 +51,18 @@ bool millerTest(uint64_t n, uint64_t d) {
 
     uint64_t x = pow_mod(a, d, n);
 
-    if (x == 1 || x == n - 1){
+    if (x == 1 || x == n - 1) {
         return true;
     }
 
-    while (d != n - 1) {
+    for (uint64_t r = 1; r < s; r++) {
         x = mul_mod(x, x, n);
-        d *= 2;
 
-        if (x == 1) { 
-            return false; 
+        if (x == n - 1) {
+            return true;
         }
-        if (x == n - 1) { 
-            return true; 
+        if (x == 1) {
+            return false; 
         }
     }
 
@@ -71,23 +70,25 @@ bool millerTest(uint64_t n, uint64_t d) {
 }
 
 bool isPrime(uint64_t n, int k) {
-    if (n < 2) { 
-        return false; 
+    if (n < 2) {
+        return false;
     }
-    if (n == 2 || n == 3) { 
-        return true; 
+    if (n == 2 || n == 3) {
+        return true;
     }
-    if (n % 2 == 0) { 
-        return false; 
+    if (n % 2 == 0) {
+        return false;
     }
 
     uint64_t d = n - 1;
-    while (d % 2 == 0){
+    uint64_t s = 0;
+    while (d % 2 == 0) {
         d /= 2;
+        s++;
     }
 
     for (int i = 0; i < k; i++) {
-        if (!millerTest(n, d)){
+        if (!millerTest(n, d, s)) {
             return false;
         }
     }
