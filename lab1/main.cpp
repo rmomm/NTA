@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdint>
 #include <chrono>
+#include <string>
 #include "factorization.h"
 #include "primality.h"
 
@@ -21,10 +22,10 @@ void runFullFactorization(uint64_t n) {
     cout << "\n\n Miller-Rabin \n";
     cout << (prime ? "Prime" : "Composite") << "\n";
     cout << "Time: " << duration_cast<microseconds>(end - start).count() / 1000.0 << " ms\n";
+
     if (prime) { 
         return; 
     }
-
 
     start = high_resolution_clock::now();
     uint64_t td = trialDivision(n);
@@ -102,8 +103,20 @@ void compareAlgorithms(uint64_t n) {
     cout << "Time: " << duration_cast<microseconds>(end - start).count() / 1000.0 << " ms\n";
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc >= 2) {
+        try {
+            uint64_t n = stoull(argv[1]);
+            runFullFactorization(n);
+        }
+        catch (...) {
+            cout << "Erorr" << endl;
+        }
+        return 0;
+    }
+
     runFullFactorization(323324583518541583ULL);
+
 
     vector<uint64_t> numbers = {
         3009182572376191ULL,
